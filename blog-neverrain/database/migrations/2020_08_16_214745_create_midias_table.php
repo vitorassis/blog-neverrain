@@ -15,8 +15,8 @@ class CreateMidiasTable extends Migration
     {
         Schema::create('midias', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('jogo_id');
-            $table->unsignedBigInteger('noticia_id');
+            $table->unsignedBigInteger('jogo_id')->default(0);
+            $table->unsignedBigInteger('noticia_id')->default(0);
             $table->string('tipo');
             $table->string('link');
             $table->string('alt');

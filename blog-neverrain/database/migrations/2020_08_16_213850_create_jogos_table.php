@@ -18,7 +18,7 @@ class CreateJogosTable extends Migration
             $table->string('nome')->unique();
             $table->json('titulo_empolgante');
             $table->json('descricao_empolgante');
-            $table->string('descricao');
+            $table->json('descricao');
             $table->timestamps();
             // $table->dropSoftDeletes();	
         });

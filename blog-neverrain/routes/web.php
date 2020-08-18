@@ -13,6 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function(){
+    return redirect('/pt');
+});
+
+Route::prefix('{lang?}')->middleware('locale')->group(function() {
+
+    Route::get('/', 'IndexController@index');
+
+    Route::prefix('/games')->group(function(){
+        Route::get('/', 'JogoController@index');
+        Route::get('{jogo:nome}', 'JogoController@view');
+    });
 });
