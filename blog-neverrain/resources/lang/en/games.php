@@ -2,6 +2,8 @@
 
 return[
 
-    'screenshots'=>'Screenshots'
+    'screenshots'=>'Screenshots',
+    'watchtrailer'=>'Watch trailer',
+    'wherebuy'=>'Where buy'
 
 ];

@@ -8,7 +8,7 @@ use App\Jogo;
 class JogoController extends Controller
 {
     public function index($lang){
-        $jogos = Jogo::with('midias')->get();
+        $jogos = Jogo::with('midias')->orderBy('id', 'DESC')->get();
 
         for($i = 0; $i < sizeof($jogos); $i++){
             $jogos[$i]->midias = $jogos[$i]->midias->filter(function($value, $key){
@@ -17,7 +17,7 @@ class JogoController extends Controller
             
             $jogos[$i]->titulo_empolgante = json_decode($jogos[$i]->titulo_empolgante)->$lang;
             $jogos[$i]->descricao_empolgante = json_decode($jogos[$i]->descricao_empolgante)->$lang;
-            // $jogos[$i]->descricao = json_decode($jogos[$i]->descricao)->$lang;
+            $jogos[$i]->descricao = json_decode($jogos[$i]->descricao)->$lang;
           
         }
         
@@ -42,6 +42,6 @@ class JogoController extends Controller
 
         $jogo->r_midias = $midias;
 
-        return view('jogo', ['j_view'=>$jogo, 'jogos'=> Jogo::all()]);
+        return view('jogo', ['j_view'=>$jogo, 'jogos'=> Jogo::orderBy('id', 'DESC')->get()]);
     }
 }

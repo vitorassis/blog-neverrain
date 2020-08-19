@@ -1,0 +1,20 @@
+a.btn{
+    font-size: 20pt;
+}
+
+a.btn:link, a.btn:visited, a.btn:hover, a.btn:active{
+    color: black;
+}
+
+.btn-steam{
+    background-color: lightslategrey;
+}
+
+.btn-steam>.icon::before{
+    content: url('https://api.iconify.design/mdi-steam.svg?height=40');
+    vertical-align: -0.4em;
+}
+
+.btn-steam>.content::before{
+    content: "Steam";
+}

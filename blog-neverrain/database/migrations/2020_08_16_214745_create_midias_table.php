@@ -20,6 +20,7 @@ class CreateMidiasTable extends Migration
             $table->string('tipo');
             $table->string('link');
             $table->string('alt');
+            $table->string('miscellanea')->default('');
             $table->timestamps();
         });
     }

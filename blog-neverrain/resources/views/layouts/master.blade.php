@@ -23,7 +23,8 @@
         <link rel="stylesheet" href="{{ asset('css/animate-css/animate.css') }}">
         <!-- main css -->
         <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
-        <link rel="stylesheet" href="{{ URL::asset('css/responsive.css') }}">
+		<link rel="stylesheet" href="{{ URL::asset('css/responsive.css') }}">
+		<link rel="stylesheet" href="{{ URL::asset('css/buttons-misc.css') }}">
     </head>
     <body>
 
@@ -83,9 +84,11 @@
 		</section>
 		<!--================End Home Banner Area =================-->
 		<!--CONTEÚDO DA PAGINA-->
-		<div class="container">
+		
+		{{-- <div class="container"> --}}
 			@yield('conteudo')
-		</div>
+		{{-- </div> --}}
+		
 		<!--FIM CONTEUDO PAGINA-->
 		
 		

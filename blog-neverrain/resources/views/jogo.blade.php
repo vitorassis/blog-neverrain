@@ -58,15 +58,23 @@
             
                 <br>
             @if(isset($j_view->r_midias['trailer_vid']))    
-                <h1> Assista ao trailer:</h1>
+                <h1> {{__("games.watchtrailer")}}:</h1>
                 <iframe width="560" height="315" src="{{$j_view->r_midias['trailer_vid'][0]->link}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             @endif
                 <br>
             @if(isset($j_view->r_midias['embed_lnk']))
-                <h1>Onde Comprar:</h1>
+                <h1>{{__("games.wherebuy")}}:</h1>
                 <br>
                 @foreach($j_view->r_midias['embed_lnk'] as $link)
-                    <iframe frameborder="0" src="{{$link->link}}" width="552" height="167"></iframe>
+                    @if($link->alt == "embed")
+                        <iframe frameborder="0" src="{{$link->link}}" width="552" height="167"></iframe>
+                    @elseif($link->alt == "button")
+                        <a href="{{$link->link}}" class="btn {{$link->miscellanea}}" target="_blank">
+                            <i class="icon"></i>
+                            <span class="content"></span>
+                        </a>
+                    @endif
+                    <br><br>
                 @endforeach
             @endif
         </p>

@@ -25,4 +25,7 @@ Route::prefix('{lang?}')->middleware('locale')->group(function() {
         Route::get('/', 'JogoController@index');
         Route::get('{jogo:nome}', 'JogoController@view');
     });
+
+    Route::get('about-us', 'SobreNosController@index');
+
 });

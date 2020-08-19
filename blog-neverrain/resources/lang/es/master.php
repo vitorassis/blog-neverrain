@@ -7,7 +7,7 @@ return [
     'whoarewe' => '¿Quienes somos?',
     'contact' => 'Contacto y Soporte',
     'stuffs' => 'Cosas',
-    'welcome' => 'Bienvenido!',
+    'welcome' => '¡Bienvenido!',
     'previous' => 'Anterior',
     'next' => 'Siguiente'
 ];

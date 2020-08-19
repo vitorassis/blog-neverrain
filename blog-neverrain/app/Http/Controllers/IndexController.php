@@ -9,6 +9,6 @@ class IndexController extends Controller
 {
 
     public function index(){
-        return view('welcome', ['jogos'=>Jogo::all()]);
+        return view('welcome', ['jogos'=>Jogo::orderBy('id', 'DESC')->get()]);
     }
 }

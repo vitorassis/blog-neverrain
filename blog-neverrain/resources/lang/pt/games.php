@@ -2,6 +2,8 @@
 
 return[
 
-    'screenshots'=>'Capturas de Tela'
+    'screenshots'=>'Capturas de Tela',
+    'watchtrailer'=>'Assista ao trailer',
+    'wherebuy'=>'Onde comprar'
 
 ];
