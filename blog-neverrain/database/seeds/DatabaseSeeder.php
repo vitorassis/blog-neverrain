@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Jogo;
 use App\Midia;
+use App\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,6 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Jogos table seeded!');
         $this->call("MidiasTableSeeder");
         $this->command->info('Midias table seeded!');
+        $this->call("UserTableSeeder");
+        $this->command->info('User table seeded!');
 
     }
 }
@@ -80,5 +83,16 @@ class MidiasTableSeeder extends Seeder
         Midia::create(['jogo_id'=>2, 'tipo'=>'trailer_vid', 'link'=>'https://www.youtube.com/embed/5VhyRJRkJzY', 'alt'=>'']);
         Midia::create(['jogo_id'=>2, 'tipo'=>'embed_lnk', 'link'=>'https://store.steampowered.com/app/620', 'alt'=>'button', 'miscellanea'=>'btn-steam']);
         Midia::create(['jogo_id'=>2, 'tipo'=>'embed_lnk', 'link'=>'https://itch.io/embed/508094?dark=true', 'alt'=>'embed']);
+    }
+}
+
+class UserTableSeeder extends Seeder
+{
+    public function run(){
+        User::create([
+            'name' => 'admin',
+            'email' => 'admin@nvrn.com',
+            'password' => bcrypt('%nvr%2020'),
+        ]);
     }
 }

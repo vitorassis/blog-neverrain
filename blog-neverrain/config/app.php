@@ -233,7 +233,7 @@ return [
 
     'locale' => 'pt',
 
-    'locales' => ['pt', 'en', 'es', 'ru'],
+    'locales' => ['pt', 'en', 'es'],
 
     'fallback_locale' => 'pt',
 
