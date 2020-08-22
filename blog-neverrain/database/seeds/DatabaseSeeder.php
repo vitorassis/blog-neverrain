@@ -75,6 +75,7 @@ class MidiasTableSeeder extends Seeder
         Midia::create(['jogo_id'=>1, 'tipo'=>'trailer_vid', 'link'=>'https://www.youtube.com/embed/5VhyRJRkJzY', 'alt'=>'']);
         Midia::create(['jogo_id'=>1, 'tipo'=>'embed_lnk', 'link'=>'https://store.steampowered.com/app/620', 'alt'=>'button', 'miscellanea'=>'btn-steam']);
         Midia::create(['jogo_id'=>1, 'tipo'=>'embed_lnk', 'link'=>'https://itch.io/embed/508094?dark=true', 'alt'=>'embed']);
+        Midia::create(['jogo_id'=>1, 'tipo'=>'bkgd_vid', 'link'=>'https://player.vimeo.com/video/76979871?background=1&muted=1', 'alt'=>'bkgd']);
 
         Midia::create(['jogo_id'=>2, 'tipo'=>'head_pic', 'link'=>'img/gallery_img2.png', 'alt'=>'Imagem ilustrativa']);
         Midia::create(['jogo_id'=>2, 'tipo'=>'carousel_pic', 'link'=>'img/pb-beer-1513436-1600.jpg', 'alt'=>'Imagem ilustrativa']);
@@ -83,6 +84,7 @@ class MidiasTableSeeder extends Seeder
         Midia::create(['jogo_id'=>2, 'tipo'=>'trailer_vid', 'link'=>'https://www.youtube.com/embed/5VhyRJRkJzY', 'alt'=>'']);
         Midia::create(['jogo_id'=>2, 'tipo'=>'embed_lnk', 'link'=>'https://store.steampowered.com/app/620', 'alt'=>'button', 'miscellanea'=>'btn-steam']);
         Midia::create(['jogo_id'=>2, 'tipo'=>'embed_lnk', 'link'=>'https://itch.io/embed/508094?dark=true', 'alt'=>'embed']);
+        Midia::create(['jogo_id'=>2, 'tipo'=>'bkgd_vid', 'link'=>'https://player.vimeo.com/video/76979871?background=1&muted=1', 'alt'=>'bkgd']);
     }
 }
 

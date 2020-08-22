@@ -113,6 +113,13 @@ class JogoController extends Controller
         $yt->alt = "Youtube";
         $yt->save();
 
+        $vm = new Midia();
+        $vm->jogo_id = $jogo->id;
+        $vm->tipo = "bkgd_vid";
+        $vm->link = $request->bkgd_vid;
+        $vm->alt = "Vimeo";
+        $vm->save();
+
         foreach(explode("\r\n", $request->links) as $link){
             $lnk = new Midia();
             $lnk->jogo_id = $jogo->id;
@@ -231,6 +238,10 @@ class JogoController extends Controller
         $trailer->link = $request->trailer_vid;
         $trailer->save();
 
+        $bkgd = Midia::where('jogo_id', $id)->where('tipo', 'bkgd_vid')->get()->first();
+        $bkgd->link = $request->bkgd_vid;
+        $bkgd->save();
+
         foreach(explode("\r\n", $request->links) as $_link){
             $count = Midia::where('jogo_id', $id)->where('link', $_link)->get();
             if(sizeof($count) == 0){
@@ -249,5 +260,17 @@ class JogoController extends Controller
         }
 
         return redirect('/admin/jogos/edit/midia/'.$id);
+    }
+
+    public function delete($id){
+        $jogo = Jogo::findOrFail($id);
+        $jogo->load('midias');
+        
+        foreach($jogo->midias as $midia)
+            $midia->delete();
+
+        $jogo->delete();
+
+        return redirect('/admin/jogos');
     }
 }

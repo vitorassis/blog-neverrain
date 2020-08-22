@@ -41,6 +41,7 @@ Route::prefix('/admin')->group(function(){
             });
         });
         
+        Route::get('delete/{id}', 'JogoController@delete');
     });
 });
     

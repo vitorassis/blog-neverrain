@@ -7,9 +7,9 @@
     <div class="container">
         <div class="row"><h1>Alterar Jogo</h1></div>
         <div class="row">
-            <a href="./midia/{{$jogo->id}}" class="btn btn-primary">Alterar mídias</a>
+            <a href="/admin/jogos/edit/midia/{{$jogo->id}}" class="btn btn-primary">Alterar mídias</a>
         </div>
-        <form action="./{{$jogo->id}}" method="post">
+        <form action="/admin/jogos/edit/{{$jogo->id}}" method="post">
             @csrf
             <div class="row form-group">
                 <div class="col-md-6 text-right"><label for="nome">Nome:</label></div>

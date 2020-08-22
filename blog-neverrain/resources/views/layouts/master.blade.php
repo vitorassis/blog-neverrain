@@ -3,6 +3,7 @@
 	$lang = app()->getLocale();
 
 	$title = Lang::has("master.".$titleYield, $lang) ? __("master.".$titleYield) : $titleYield;
+	
 @endphp
 
 <!doctype html>
@@ -25,6 +26,19 @@
         <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
 		<link rel="stylesheet" href="{{ URL::asset('css/responsive.css') }}">
 		<link rel="stylesheet" href="{{ URL::asset('css/buttons-misc.css') }}">
+		<style>
+			iframe.bkgd {
+				box-sizing: border-box;
+				height: 56.25vw;
+				left: 50%;
+				min-height: 100%;
+				min-width: 100%;
+				transform: translate(-50%, -50%);
+				position: absolute;
+				top: 50%;
+				width: 177.77777778vh;
+			}
+		</style>
     </head>
     <body>
 
@@ -73,15 +87,44 @@
 		<!--================Header Menu Area =================-->
 	
 		<!--================Home Banner Area =================-->
-		<section class="banner_area">
-			<div class="banner_inner d-flex align-items-center" style="background-image: url('@yield('banner-img')')">
-				<div class="container">
-					<div class="banner_content text-center">
-						<h2>{{$title}}</h2>
+		@if(isset(app()->view->getSections()['bkgd_vid']))
+			<section class="banner_area">		
+				<iframe src="@yield('bkgd_vid')" class="bkgd" width="100%" height=100% frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+
+				<div class="banner_inner d-flex align-items-center">
+					<div class="container">
+						<div class="banner_content text-center">
+							<h2>{{$title}}</h2>
+						</div>
 					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		@elseif(!isset(app()->view->getSections()['header_complex']))
+			<section class="banner_area">		
+				<div class="banner_inner d-flex align-items-center" style="background-image: url('@yield('banner-img')')">
+					<div class="container">
+						<div class="banner_content text-center">
+							<h2>{{$title}}</h2>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		@else
+			<section class="home_banner_area">
+				<div class="banner_inner d-flex align-items-center" style="background-image: url('@yield('banner-img')')">
+					
+					<div class="container">
+						<div class="row">
+							<div class="banner_content text-center">
+								@yield('header_complex')
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			
+		@endif
 		<!--================End Home Banner Area =================-->
 		<!--CONTEÚDO DA PAGINA-->
 		

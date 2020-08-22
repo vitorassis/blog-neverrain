@@ -6,7 +6,7 @@
     
     <div class="container">
         <div class="row"><h1>Novo Jogo</h1></div>
-        <form action="./store" method="post" enctype="multipart/form-data">
+        <form action="/admin/jogos/store" method="post" enctype="multipart/form-data">
             @csrf
             <div class="row form-group">
                 <div class="col-md-6 text-right"><label for="nome">Nome:</label></div>
@@ -95,6 +95,8 @@
             <div class="row"><input type="file" class="form-control" name="empolg_pic" accept="image/*" required></div>
             <div class="row">Trailer YouTube:</div>
             <div class="row"><input type="text" class="form-control" name="trailer_vid" required></div>
+            <div class="row">Vídeo de fundo (vimeo):</div>
+            <div class="row"><input type="text" class="form-control" name="bkgd_vid" required></div>
             <div class="row">Embed Links (Um por linha):</div>
             <div class="row"><textarea class="form-control" name="links"></textarea></div>
             <div class="row">

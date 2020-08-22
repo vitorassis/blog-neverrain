@@ -26,6 +26,11 @@
                 $("#removerCarousel").val($("#removerCarousel").val()+ ","+id);
             $("#remCar"+id).attr("disabled", true);
         }
+
+        function removeGame(id){
+            if(confirm("Deseja mesmo remover?"))
+                window.location.href = "/admin/jogos/delete/"+id;
+        }
     </script>
 </head>
 <body>

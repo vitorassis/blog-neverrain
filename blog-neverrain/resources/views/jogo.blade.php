@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@section('bkgd_vid', $j_view->r_midias["bkgd_vid"][0]->link)
+
 @section('title', $j_view->nome)
 
 @section('banner-img', asset($j_view->r_midias["head_pic"][0]->link))

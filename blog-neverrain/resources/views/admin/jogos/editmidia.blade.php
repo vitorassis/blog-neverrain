@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row"><h1>Imagens de {{$jogo->nome}}</h1></div>
-        <form action="./{{$jogo->id}}" method="post"  enctype="multipart/form-data">
+        <form action="/admin/jogos/edit/midia/{{$jogo->id}}" method="post"  enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <h2>Capa:</h2>
@@ -84,9 +84,13 @@
             <div class="row">
                 <h2>Trailer Youtube:</h2>
             </div>
+            
             <div class="row">
                 <input type="text" class="form-control" name="trailer_vid" value="{{$jogo->r_midias['trailer_vid'][0]->link}}">
             </div>
+            <div class="row"><h2>Vídeo de fundo (vimeo):</h2></div>
+            <div class="row"><input type="text" class="form-control" name="bkgd_vid" value="{{$jogo->r_midias['bkgd_vid'][0]->link}}" required></div>
+            
             <div class="row">
                 <h2>Links:</h2>
             </div>
