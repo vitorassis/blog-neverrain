@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row"><h1>Imagens de {{$jogo->nome}}</h1></div>
-        <form action="/admin/jogos/edit/midia/{{$jogo->id}}" method="post"  enctype="multipart/form-data">
+        <form action="/ademiro/jogos/edit/midia/{{$jogo->id}}" method="post"  enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <h2>Capa:</h2>

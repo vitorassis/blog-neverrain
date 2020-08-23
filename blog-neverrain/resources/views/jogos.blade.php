@@ -14,7 +14,7 @@
                 <div class="col-md-6">
                     <h1><div class="row">{{ $jogo->nome }}</div></h1>
                     <div class="row">
-                        {{ $jogo->descricao_empolgante }}
+                        {{ $jogo->textos->first()->texto }}
                     </div>
                 </div>
             </div>

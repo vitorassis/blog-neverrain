@@ -69,8 +69,9 @@
 										{{-- <li class="nav-item"><a class="nav-link" href="nevermuseum">Never Rain Museum</a> --}}
 									</ul>
 								</li>							
-								<li class="nav-item"><a class="nav-link" href="/{{$lang}}/gallery">{{__("master.blog")}}</a>
-								<li class="nav-item"><a class="nav-link" href="/{{$lang}}/about-us">{{__("master.whoarewe")}}</a>
+								<li class="nav-item"><a class="nav-link" href="/{{$lang}}/gallery">{{__("master.blog")}}</a></li>
+								<li class="nav-item"><a class="nav-link" href="/{{$lang}}/about-us">{{__("master.whoarewe")}}</a></li>
+								<li class="nav-item"><a class="nav-link" href="/{{$lang}}/press-kit">{{__("master.presskit")}}</a></li>
 								
 								<li class="nav-item"><a class="nav-link" href="/{{$lang}}/contact">{{__("master.contact")}}</a></li>
 							</ul>

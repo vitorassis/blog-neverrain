@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMidiasTable extends Migration
+class CreateTextosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateMidiasTable extends Migration
      */
     public function up()
     {
-        Schema::create('midias', function (Blueprint $table) {
+        Schema::create('textos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('jogo_id')->nullable();
-            $table->unsignedBigInteger('noticia_id')->nullable();
+            $table->BigInteger('jogo_id')->nullable()->unsigned();
+            $table->BigInteger('noticia_id')->nullable()->unsigned();
             $table->string('tipo');
-            $table->string('link');
-            $table->string('alt');
-            $table->string('miscellanea')->default('');
+            $table->string('lang');
+            $table->string('texto');
 
             $table->foreign('jogo_id')->references('id')->on('jogos')->onDelete('cascade');
             $table->foreign('noticia_id')->references('id')->on('noticias')->onDelete('cascade');
@@ -35,6 +34,6 @@ class CreateMidiasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('midias');
+        Schema::dropIfExists('textos');
     }
 }

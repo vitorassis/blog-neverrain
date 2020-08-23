@@ -16,11 +16,8 @@ class CreateJogosTable extends Migration
         Schema::create('jogos', function (Blueprint $table) {
             $table->id();
             $table->string('nome')->unique();
-            $table->json('titulo_empolgante');
-            $table->json('descricao_empolgante');
-            $table->json('descricao');
+            $table->timestamp('data_lancamento');
             $table->timestamps();
-            // $table->dropSoftDeletes();	
         });
     }
 

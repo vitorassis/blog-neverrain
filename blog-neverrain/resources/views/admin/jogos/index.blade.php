@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <a href="/admin/jogos/new" class="btn btn-primary">Adicionar Jogo</a>
+            <a href="/ademiro/jogos/new" class="btn btn-primary">Adicionar Jogo</a>
         </div>
         <table class="table table-striped">
             <thead>
@@ -17,7 +17,7 @@
                 @foreach ($jogos as $jogo)
                     <tr>
                         <td>{{$jogo->nome}}</td>
-                        <td><a href="/admin/jogos/edit/{{$jogo->id}}" class="btn btn-warning">Editar</a></td>
+                        <td><a href="/ademiro/jogos/edit/{{$jogo->id}}" class="btn btn-warning">Editar</a></td>
                         <td><button onclick="removeGame({{$jogo->id}})" class="btn btn-danger">Excluir</button></td>
                     </tr>
                 @endforeach

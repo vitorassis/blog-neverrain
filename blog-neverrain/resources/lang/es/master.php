@@ -4,6 +4,7 @@ return [
     'home' => 'Comiezo',
     'games' => 'Juegos',
     'blog' => 'Blog',
+    'presskit'=>'Press Kit',
     'whoarewe' => '¿Quienes somos?',
     'contact' => 'Contacto y Soporte',
     'stuffs' => 'Cosas',

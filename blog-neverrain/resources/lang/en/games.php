@@ -4,6 +4,8 @@ return[
 
     'screenshots'=>'Screenshots',
     'watchtrailer'=>'Watch trailer',
-    'wherebuy'=>'Where buy'
+    'wherebuy'=>'Where buy',
+    'platforms'=>'Plataform|Plataforms',
+    'releasedate'=>'Release Date'
 
 ];

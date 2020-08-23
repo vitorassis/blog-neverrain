@@ -6,122 +6,111 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Jogo;
 use App\Midia;
+use App\Texto;
+use App\PlataformaDisponivel;
+use App\Plataforma;
+use Illuminate\Support\Facades\Auth;
+
 
 class JogoController extends Controller
 {
     public function index($lang){
-        $jogos = Jogo::with('midias')->orderBy('id', 'DESC')->get();
-
-        for($i = 0; $i < sizeof($jogos); $i++){
-            $jogos[$i]->midias = $jogos[$i]->midias->filter(function($value, $key){
-                return $value->tipo == "head_pic";
-            });
-            
-            $jogos[$i]->titulo_empolgante = json_decode($jogos[$i]->titulo_empolgante)->$lang;
-            $jogos[$i]->descricao_empolgante = json_decode($jogos[$i]->descricao_empolgante)->$lang;
-            $jogos[$i]->descricao = json_decode($jogos[$i]->descricao)->$lang;
-          
-        }
+        $jogos = Jogo::with(['midias' => function($q){
+            $q->where('tipo', 'head_pic');
+        }, 
+        'textos'=>function($q) use($lang){
+            $q->where('lang', $lang)->where('tipo', 'descricao_empolg');
+        }])->orderBy('data_lancamento', 'DESC')->get();
         
-         return view('jogos', ['jogos'=>$jogos]);
+        return view('jogos', ['jogos'=>$jogos]);
     }
 
     public function indexadmin(){
         return view('admin.jogos.index', ['jogos'=>Jogo::all()]);
     }
 
-    public function view($lang, Jogo $jogo){
-        $jogo->load('midias');
+    public function view($lang, $nome){
+        $jogo = Jogo::where('nome', $nome)->with(['midias', 'textos'=>function($q) use ($lang){
+            $q->where('lang', $lang);
+        }, 'plataformas'])->get()->first();
 
-        $jogo->titulo_empolgante = json_decode($jogo->titulo_empolgante)->$lang;
-        $jogo->descricao_empolgante = json_decode($jogo->descricao_empolgante)->$lang;
-        $jogo->descricao = json_decode($jogo->descricao)->$lang;
-
-        $_midias = $jogo->midias;
-
-        $midias = array();
-        foreach($_midias as $midia){
-            if(!isset($midias[$midia->tipo]))
-                $midias[$midia->tipo] = array();
-            array_push($midias[$midia->tipo], $midia);
-        }
-
-        $jogo->r_midias = $midias;
-
-        return view('jogo', ['j_view'=>$jogo, 'jogos'=> Jogo::orderBy('id', 'DESC')->get()]);
+        return view('jogo', ['j_view'=>$jogo, 'jogos'=> Jogo::orderBy('data_lancamento', 'DESC')->get()]);
     }
 
     public function store(Request $request){
+        
+        $this->validate($request, array(
+            'nome' =>'required|unique:jogos,nome'
+        ));
 
         $langs = config('app.locales');
 
         $jogo = new Jogo();
-        $jogo->nome = $request->post("nome");
-        
-        $titulo_empolgante = array();
-        foreach($langs as $lang){
-            $titulo_empolgante[$lang] = $request->post("titulo_empolgante_".$lang);
-        }
-        $jogo->titulo_empolgante = json_encode($titulo_empolgante);
-        $descricao_empolgante = array();
-        foreach($langs as $lang){
-            $descricao_empolgante[$lang] = $request->post("descricao_empolgante_".$lang);
-        }
-        $jogo->descricao_empolgante = json_encode($descricao_empolgante);
-
-        $descricao = array();
-        foreach($langs as $lang){
-            $descricao[$lang] = $request->post("descricao_".$lang);
-        }
-        $jogo->descricao = json_encode($descricao);
+        $jogo->nome = $request->nome;
+        $jogo->data_lancamento = $request->data_lancamento;
 
         $jogo->save();
+        
+        $plataformas = json_decode($request->plataformas);
 
-        $head = new Midia();
-        $head->jogo_id = $jogo->id;
-        $head->tipo = "head_pic";
-        $head->link = md5(random_int(1, 999999999999999)).".". explode(".", $request->head_pic->getClientOriginalName())[1];
-        $head->alt = "Capa";
-        $request->head_pic->storeAs('', $head->link);
-        $head->link =  'storage/' . $head->link;
-        $head->save();
+        foreach($plataformas as $plataforma){
+            $plat = new PlataformaDisponivel();
+
+            $plat->jogo_id = $jogo->id;
+            $plat->plataforma_id = Plataforma::where('nome', $plataforma)->get()->first()->id;
+            $plat->save();
+        }
+
+        foreach(array('titulo_empolg', 'descricao_empolg', 'descricao') as $tipo){
+            foreach($langs as $lang){
+                $texto = new Texto();
+
+                $texto->jogo_id = $jogo->id;
+                $texto->lang = $lang;
+                $texto->texto = $request->post($tipo.'_'.$lang);
+                $texto->tipo = $tipo;
+                $texto->save();
+            }
+        }
+
+        foreach(array('head_pic', 'empolg_pic') as $tipo){
+            $midia = new Midia();
+
+            $midia->jogo_id = $jogo->id;
+            $midia->tipo = "head_pic";
+            $midia->link = md5(random_int(1, 999999999999999)).$tipo.".". explode(".", $request->$tipo->getClientOriginalName())[1];
+            $midia->alt = "Capa";
+            $request->$tipo->storeAs('', $midia->link);
+            $midia->link =  'storage/' . $midia->link;
+            $midia->save();
+
+        }
 
         foreach($request->carousel_pic as $pic){
             $carousel = new Midia();
+
             $carousel->jogo_id = $jogo->id;
             $carousel->tipo = "carousel_pic";
-            $carousel->link = md5(random_int(1, 999999999999999)).".". explode(".", $pic->getClientOriginalName())[1];
+            $carousel->link = md5(random_int(1, 999999999999999))."carousel_pic.". explode(".", $pic->getClientOriginalName())[1];
             $carousel->alt = "Carrossel";
             $pic->storeAs('', $carousel->link);
             $carousel->link = 'storage/' . $carousel->link;
             $carousel->save();
         }
 
-        $empolg = new Midia();
-        $empolg->jogo_id = $jogo->id;
-        $empolg->tipo = "empolg_pic";
-        $empolg->link = md5(random_int(1, 999999999999999)).".". explode(".", $request->empolg_pic->getClientOriginalName())[1];
-        $empolg->alt = "Capa";
-        $request->empolg_pic->storeAs('', $empolg->link);
-        $empolg->link = 'storage/' . $empolg->link;
-        $empolg->save();
+        foreach(array('trailer_vid', 'bkgd_vid') as $tipo){
+            $link = new Midia();
 
-        $yt = new Midia();
-        $yt->jogo_id = $jogo->id;
-        $yt->tipo = "trailer_vid";
-        $yt->link = $request->trailer_vid;
-        $yt->alt = "Youtube";
-        $yt->save();
-
-        $vm = new Midia();
-        $vm->jogo_id = $jogo->id;
-        $vm->tipo = "bkgd_vid";
-        $vm->link = $request->bkgd_vid;
-        $vm->alt = "Vimeo";
-        $vm->save();
+            $link->jogo_id = $jogo->id;
+            $link->tipo = $tipo;
+            $link->link = $request->trailer_vid;
+            $link->alt = $tipo;
+            $link->save();
+        }
 
         foreach(explode("\r\n", $request->links) as $link){
             $lnk = new Midia();
+            
             $lnk->jogo_id = $jogo->id;
             $lnk->tipo = "embed_lnk";
             $lnk->link = $link;
@@ -129,42 +118,63 @@ class JogoController extends Controller
             $lnk->save();
         }
 
-        return view('admin.jogos');
+        return redirect("/ademiro/jogos/");
     }
     
     public function edit($id){
         $jogo = Jogo::findOrFail($id);
         $jogo->load('midias');
-        
-        return view('admin.jogos.edit', ['jogo'=>$jogo, 'langs'=>config('app.locales')]);
+        $jogo->load('textos');
+
+        $plats = PlataformaDisponivel::where('jogo_id', $jogo->id)->get();
+        $ps = array();
+        foreach($plats as $plat){
+            array_push($ps, Plataforma::find($plat->plataforma_id)->nome);
+        }
+
+        $jogo->plataformas = json_encode($ps);
+
+        return view('admin.jogos.edit', ['jogo'=>$jogo, 'plataformas'=>Plataforma::all(), 'langs'=>config('app.locales')]);
     }
 
     public function editstore($id, Request $request){
+        $this->validate($request, array(
+            'nome' =>"required|unique:jogos,nome,$id"
+        ));
+
         $langs = config('app.locales');
 
         $jogo = Jogo::findOrFail($id);
-        $jogo->nome = $request->post("nome");
-        
-        $titulo_empolgante = array();
-        foreach($langs as $lang){
-            $titulo_empolgante[$lang] = $request->post("titulo_empolgante_".$lang);
-        }
-        $jogo->titulo_empolgante = json_encode($titulo_empolgante);
-        $descricao_empolgante = array();
-        foreach($langs as $lang){
-            $descricao_empolgante[$lang] = $request->post("descricao_empolgante_".$lang);
-        }
-        $jogo->descricao_empolgante = json_encode($descricao_empolgante);
-
-        $descricao = array();
-        foreach($langs as $lang){
-            $descricao[$lang] = $request->post("descricao_".$lang);
-        }
-        $jogo->descricao = json_encode($descricao);
-
+        $jogo->nome = $request->nome;
+        $jogo->data_lancamento = $request->data_lancamento;
         $jogo->save();
 
-        return redirect('/admin/jogos/edit/'.$id);
+        $plataformas = json_decode($request->plataformas);
+
+        foreach(PlataformaDisponivel::where('jogo_id', $jogo->id)->get() as $plat)
+            $plat->remove();
+
+        foreach($plataformas as $plataforma){
+            $plat = new PlataformaDisponivel();
+
+            $plat->jogo_id = $jogo->id;
+            $plat->plataforma_id = Plataforma::where('nome', $plataforma)->get()->first()->id;
+            $plat->save();
+        }
+
+        foreach(array('titulo_empolg', 'descricao_empolg', 'descricao') as $tipo){
+            foreach($langs as $lang){
+                $texto = Texto::where('tipo', $tipo)->where('lang', $lang)->where('jogo_id', $jogo->id)->get()->first();
+
+                $texto->jogo_id = $jogo->id;
+                $texto->lang = $lang;
+                $texto->texto = $request->{$tipo.'_'.$lang};
+                $texto->tipo = $tipo;
+                $texto->save();
+            }
+        }
+
+        return redirect('/ademiro/jogos/edit/'.$id);
     }
 
     public function editmidia($id){
@@ -188,13 +198,9 @@ class JogoController extends Controller
     public function editmidiastore($id, Request $request){
         if(isset($request->head_pic)){
             $head = Midia::where('tipo', 'head_pic')->where('jogo_id', $id)->get()->first();
-            $head->delete();
             
-            $head = new Midia();
             $head->jogo_id = $id;
-            $head->tipo = "head_pic";
-            $head->link = md5(random_int(1, 999999999999999)).".". explode(".", $request->head_pic->getClientOriginalName())[1];
-            $head->alt = "Capa";
+            $head->link = md5(random_int(1, 999999999999999))."head_pic.". explode(".", $request->head_pic->getClientOriginalName())[1];
             $request->head_pic->storeAs('', $head->link);
             $head->link =  'storage/' . $head->link;
             $head->save();
@@ -205,7 +211,7 @@ class JogoController extends Controller
                 $carousel = new Midia();
                 $carousel->jogo_id = $id;
                 $carousel->tipo = "carousel_pic";
-                $carousel->link = md5(random_int(1, 999999999999999)).".". explode(".", $pic->getClientOriginalName())[1];
+                $carousel->link = md5(random_int(1, 999999999999999))."carousel_pic.". explode(".", $pic->getClientOriginalName())[1];
                 $carousel->alt = "Carrossel";
                 $pic->storeAs('', $carousel->link);
                 $carousel->link = 'storage/' . $carousel->link;
@@ -222,13 +228,9 @@ class JogoController extends Controller
 
         if(isset($request->empolg_pic)){
             $empolg = Midia::where('tipo', 'empolg_pic')->where('jogo_id', $id)->get()->first();
-            $empolg->delete();
             
-            $empolg = new Midia();
             $empolg->jogo_id = $id;
-            $empolg->tipo = "empolg_pic";
-            $empolg->link = md5(random_int(1, 999999999999999)).".". explode(".", $request->empolg_pic->getClientOriginalName())[1];
-            $empolg->alt = "Capa";
+            $empolg->link = md5(random_int(1, 999999999999999))."empolg_pic.". explode(".", $request->empolg_pic->getClientOriginalName())[1];
             $request->empolg_pic->storeAs('', $empolg->link);
             $empolg->link =  'storage/' . $empolg->link;
             $empolg->save();
@@ -259,18 +261,16 @@ class JogoController extends Controller
             }
         }
 
-        return redirect('/admin/jogos/edit/midia/'.$id);
+        return redirect('/ademiro/jogos/edit/midia/'.$id);
     }
 
     public function delete($id){
-        $jogo = Jogo::findOrFail($id);
-        $jogo->load('midias');
-        
-        foreach($jogo->midias as $midia)
-            $midia->delete();
+        if (Auth::check()) {
 
-        $jogo->delete();
+            $jogo = Jogo::findOrFail($id);
 
-        return redirect('/admin/jogos');
+            $jogo->delete();
+        }
+        return redirect('/ademiro/jogos');
     }
 }

@@ -11,4 +11,12 @@ class Jogo extends Model
     public function midias(){
         return $this->hasMany('App\Midia');
     }
+
+    public function textos(){
+        return $this->hasMany('App\Texto');
+    }
+
+    public function plataformas(){
+        return $this->belongsToMany('App\Plataforma', 'plataformasdisponiveis');
+    }
 }

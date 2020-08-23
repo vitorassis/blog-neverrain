@@ -7,14 +7,19 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Never Rain Studios - Administração</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <script type="application/javascript" src="{{asset('js/tag_selector.js')}}"></script>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -29,15 +34,49 @@
 
         function removeGame(id){
             if(confirm("Deseja mesmo remover?"))
-                window.location.href = "/admin/jogos/delete/"+id;
+                window.location.href = "/ademiro/jogos/delete/"+id;
+        }
+
+        function removePlataforma(id){
+            if(confirm("Deseja mesmo remover?"))
+                window.location.href = "/ademiro/plataformas/delete/"+id;
         }
     </script>
+    <style>
+        .tag-container{
+            border:2px solid black;
+            padding: 10px;
+            border-radius: 5px;
+            display:flex;
+            
+        }
+        .tag-container .tag{
+            padding:5px;
+            border: 1px solid #ccc;
+            margin:5px;
+            display:flex;
+            align-items: center;
+            border-radius: 3px;
+            background-color: #f2f2f2;
+        }
+        .tag i{
+            font-size: 16px;
+            margin-left: 5px;
+        }
+        .tag-container select{
+            flex: 1;
+            font-size: 16px;
+            padding: 5px;
+            outline: none;
+            border:0;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/admin') }}">
+                <a class="navbar-brand" href="{{ url('/ademiro') }}">
                     Never Rain Studios - Administração
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -57,12 +96,13 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
                         @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="/ademiro/jogos">Jogos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/ademiro/plataformas">Plataformas</a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -90,5 +130,59 @@
             @yield('content')
         </main>
     </div>
+
+    @if(isset($langs) && isset($plataformas))
+        <script>
+
+            updateTags();
+
+            function createTag(label){
+                div = document.createElement("div");
+                div.setAttribute("class", 'tag');
+                span = document.createElement("span")
+                span.innerHTML = label;
+                close = document.createElement("i");
+                close.setAttribute("class", 'material-icons');
+                close.innerHTML = "close";
+                close.setAttribute("onclick","removeTag('"+label+"')");
+
+                div.appendChild(span);
+                div.appendChild(close);
+
+                return div;
+            }
+
+            function updateTags(){
+                $(".tag").each(function(index){
+                    $(this).remove();
+                });
+
+                JSON.parse($("#platfs").val()).slice().reverse().forEach(element => {
+                    $(".tag-container").prepend(createTag(element));
+                });
+
+                
+            }
+
+            function selectEvent(){
+                if($("#plataformas").val() == "")
+                    return;
+                tags = JSON.parse($("#platfs").val());
+                if(!tags.includes($("#plataformas").val()))
+                    tags.push($("#plataformas").val());
+                $("#platfs").val(JSON.stringify(tags));
+
+                updateTags();
+            };
+
+            function removeTag(tag){
+                tags = JSON.parse($("#platfs").val());
+                index = tags.indexOf(tag);
+                tags.splice(index, 1);
+                $("#platfs").val(JSON.stringify(tags));
+                updateTags();
+            }
+        </script>
+    @endif
 </body>
 </html>

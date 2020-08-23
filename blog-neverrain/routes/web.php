@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Plataforma;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,13 +22,13 @@ Route::get('/', function(){
 
 Auth::routes();
 
-Route::prefix('/admin')->group(function(){
+Route::prefix('/ademiro')->group(function(){
     Route::get('/', 'HomeController@index')->name('home');
 
     Route::prefix('jogos')->middleware('auth')->group(function(){
         Route::get('/', 'JogoController@indexadmin');
         Route::get('new', function(){
-            return view('admin.jogos.new', ['langs'=>config('app.locales')]);
+            return view('admin.jogos.new', ['langs'=>config('app.locales'), 'plataformas'=>Plataforma::all()]);
         });
         Route::post('store', 'JogoController@store');
 
@@ -43,6 +44,21 @@ Route::prefix('/admin')->group(function(){
         
         Route::get('delete/{id}', 'JogoController@delete');
     });
+
+    Route::prefix('plataformas')->middleware('auth')->group(function(){
+        Route::get('/', 'PlataformaController@indexadmin');
+        Route::get('/new', function(){
+            return view('admin.platf.new');
+        });
+        Route::post('store', 'PlataformaController@store');
+
+        Route::prefix('edit')->group(function(){
+            Route::get('{id}', 'PlataformaController@edit');
+            Route::post('{id}', 'PlataformaController@editstore');
+        });
+
+        Route::get('delete/{id}', 'PlataformaController@delete');
+    });
 });
     
 
@@ -57,7 +73,5 @@ Route::prefix('{lang?}')->middleware('locale')->group(function() {
 
     Route::get('about-us', 'SobreNosController@index');
 
-
-
-    // Route::prefix('admin')
+    Route::get('/press-kit', 'PressKitController@index');
 });

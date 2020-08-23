@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Midia extends Model
+class Texto extends Model
 {
-    protected $table = "midias";
+    protected $table = "textos";
 
     public function owner(){
         if($this->jogo_id != 0)
