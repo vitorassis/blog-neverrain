@@ -40,7 +40,7 @@
 			}
 		</style>
     </head>
-    <body>
+    <body style="overflow-x: hidden">
 
 		<!--================Header Menu Area =================-->
 		<header class="header_area">
@@ -69,7 +69,7 @@
 										{{-- <li class="nav-item"><a class="nav-link" href="nevermuseum">Never Rain Museum</a> --}}
 									</ul>
 								</li>							
-								<li class="nav-item"><a class="nav-link" href="/{{$lang}}/gallery">{{__("master.blog")}}</a></li>
+								<li class="nav-item"><a class="nav-link" href="/{{$lang}}/blog">{{__("master.blog")}}</a></li>
 								<li class="nav-item"><a class="nav-link" href="/{{$lang}}/about-us">{{__("master.whoarewe")}}</a></li>
 								<li class="nav-item"><a class="nav-link" href="/{{$lang}}/press-kit">{{__("master.presskit")}}</a></li>
 								
@@ -143,7 +143,7 @@
 					<div class="col-lg-3 col-sm-6">
 						<aside class="f_widget ab_widget">
 							<div class="f_title">
-								<h4>{{__("master.games")}}</h4>
+								<h4><a href="/{{$lang}}/games">{{__("master.games")}}</a></h4>
 							</div>
 							<ul>
 								@foreach ($jogos as $jogo)

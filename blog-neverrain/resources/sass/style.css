@@ -77,6 +77,10 @@ button:focus {
   background: #fff !important;
 }
 
+p{
+  text-align: justify;
+  text-indent: 30px;
+}
 /*---------------------------------------------------- */
 /*----------------------------------------------------*/
 .section_gap {

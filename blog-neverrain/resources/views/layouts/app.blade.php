@@ -37,14 +37,24 @@
                 window.location.href = "/ademiro/jogos/delete/"+id;
         }
 
+        function removeNoticia(id){
+            if(confirm("Deseja mesmo remover?"))
+                window.location.href = "/ademiro/noticias/delete/"+id;
+        }
+
         function removePlataforma(id){
             if(confirm("Deseja mesmo remover?"))
                 window.location.href = "/ademiro/plataformas/delete/"+id;
         }
+
+        function removeTag(id){
+            if(confirm("Deseja mesmo remover?"))
+                window.location.href = "/ademiro/tags/delete/"+id;
+        }
     </script>
     <style>
         .tag-container{
-            border:2px solid black;
+            border:1px solid black;
             padding: 10px;
             border-radius: 5px;
             display:flex;
@@ -103,6 +113,12 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/ademiro/plataformas">Plataformas</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/ademiro/noticias">Blog</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/ademiro/tags">Tags</a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -131,34 +147,36 @@
         </main>
     </div>
 
+    <script>
+        function createTag(label){
+            div = document.createElement("div");
+            div.setAttribute("class", 'tag');
+            span = document.createElement("span")
+            span.innerHTML = label;
+            close = document.createElement("i");
+            close.setAttribute("class", 'material-icons');
+            close.innerHTML = "close";
+            close.setAttribute("onclick","removeTag('"+label+"')");
+
+            div.appendChild(span);
+            div.appendChild(close);
+
+            return div;
+        }
+    </script>
+
     @if(isset($langs) && isset($plataformas))
         <script>
 
             updateTags();
 
-            function createTag(label){
-                div = document.createElement("div");
-                div.setAttribute("class", 'tag');
-                span = document.createElement("span")
-                span.innerHTML = label;
-                close = document.createElement("i");
-                close.setAttribute("class", 'material-icons');
-                close.innerHTML = "close";
-                close.setAttribute("onclick","removeTag('"+label+"')");
-
-                div.appendChild(span);
-                div.appendChild(close);
-
-                return div;
-            }
-
             function updateTags(){
-                $(".tag").each(function(index){
+                $(".platfs .tag").each(function(index){
                     $(this).remove();
                 });
 
                 JSON.parse($("#platfs").val()).slice().reverse().forEach(element => {
-                    $(".tag-container").prepend(createTag(element));
+                    $(".tag-container.platfs").prepend(createTag(element));
                 });
 
                 
@@ -181,6 +199,43 @@
                 tags.splice(index, 1);
                 $("#platfs").val(JSON.stringify(tags));
                 updateTags();
+            }
+        </script>
+    @endif
+    @if(isset($langs) && isset($tags))
+        <script>
+
+            updateTagsTag();
+
+            function updateTagsTag(){
+                $(".tgs .tag").each(function(index){
+                    $(this).remove();
+                });
+
+                JSON.parse($("#tgs").val()).slice().reverse().forEach(element => {
+                    $(".tag-container.tgs").prepend(createTag(element));
+                });
+
+                
+            }
+
+            function selectEventTag(){
+                if($("#tags").val() == "")
+                    return;
+                tags = JSON.parse($("#tgs").val());
+                if(!tags.includes($("#tags").val()))
+                    tags.push($("#tags").val());
+                $("#tgs").val(JSON.stringify(tags));
+
+                updateTagsTag();
+            };
+
+            function removeTag(tag){
+                tags = JSON.parse($("#tgs").val());
+                index = tags.indexOf(tag);
+                tags.splice(index, 1);
+                $("#tgs").val(JSON.stringify(tags));
+                updateTagsTag();
             }
         </script>
     @endif

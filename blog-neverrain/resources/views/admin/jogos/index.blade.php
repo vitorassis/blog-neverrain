@@ -16,7 +16,7 @@
             <tbody>
                 @foreach ($jogos as $jogo)
                     <tr>
-                        <td>{{$jogo->nome}}</td>
+                        <td>{{$jogo->nome}} @if($jogo->alert) <span><i class="material-icons text-danger">warning</span>@endif </td>
                         <td><a href="/ademiro/jogos/edit/{{$jogo->id}}" class="btn btn-warning">Editar</a></td>
                         <td><button onclick="removeGame({{$jogo->id}})" class="btn btn-danger">Excluir</button></td>
                     </tr>

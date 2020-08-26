@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Plataforma;
+use App\Tag;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,7 @@ Route::prefix('/ademiro')->group(function(){
     Route::prefix('jogos')->middleware('auth')->group(function(){
         Route::get('/', 'JogoController@indexadmin');
         Route::get('new', function(){
-            return view('admin.jogos.new', ['langs'=>config('app.locales'), 'plataformas'=>Plataforma::all()]);
+            return view('admin.jogos.new', ['langs'=>config('app.locales'), 'plataformas'=>Plataforma::all(), 'tags'=>Tag::all()]);
         });
         Route::post('store', 'JogoController@store');
 
@@ -59,6 +60,36 @@ Route::prefix('/ademiro')->group(function(){
 
         Route::get('delete/{id}', 'PlataformaController@delete');
     });
+
+    Route::prefix('noticias')->middleware('auth')->group(function(){
+        Route::get('/', 'BlogController@indexadmin');
+        Route::get('/new', function(){
+            return view('admin.noticias.new', ['langs'=>config('app.locales'), 'tags'=>Tag::all()]);
+        });
+        Route::post('/store', 'BlogController@store');
+
+        Route::prefix('edit')->group(function(){
+            Route::get('{id}', 'BlogController@edit');
+            Route::post('{id}', 'BlogController@editstore');
+        });
+
+        Route::get('delete/{id}', 'BlogController@delete');
+    });
+
+    Route::prefix('tags')->middleware('auth')->group(function(){
+        Route::get('/', 'TagController@indexadmin');
+        Route::get('/new', function(){
+            return view('admin.tags.new');
+        });
+        Route::post('store', 'TagController@store');
+
+        Route::prefix('edit')->group(function(){
+            Route::get('{id}', 'TagController@edit');
+            Route::post('{id}', 'TagController@editstore');
+        });
+
+        Route::get('delete/{id}', 'TagController@delete');
+    });
 });
     
 
@@ -69,6 +100,13 @@ Route::prefix('{lang?}')->middleware('locale')->group(function() {
     Route::prefix('/games')->group(function(){
         Route::get('/', 'JogoController@index');
         Route::get('{jogo:nome}', 'JogoController@view');
+    });
+
+    Route::prefix('/blog')->group(function (){
+        Route::get('/', 'BlogController@index');
+        Route::get('/{id}', 'BlogController@show');
+
+        Route::get('/tag/{nome}', 'BlogController@showPerTag');
     });
 
     Route::get('about-us', 'SobreNosController@index');

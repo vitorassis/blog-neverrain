@@ -1,3 +1,4 @@
+@php $lang = app()->getLocale(); @endphp
 @extends('layouts.master')
 
 @section('bkgd_vid', $j_view->midias->where('tipo', 'bkgd_vid')->first()->link)
@@ -41,29 +42,29 @@
     <center>
 
         <!--================Start About Us Area =================-->
-    <section class="about_us_area section_gap_top">
-    <div class="container">
-        <div class="row about_content align-items-center">
-            <div class="col-lg-6">
-                <div class="section_content">						
-                    <h1>{{$j_view->textos->where('tipo', 'titulo_empolg')->first()->texto}}</h1>
-                    <p>{{$j_view->textos->where('tipo', 'descricao_empolg')->first()->texto}}</p>
-                    
+        <section class="about_us_area section_gap_top">
+            <div class="container">
+                <div class="row about_content align-items-center">
+                    <div class="col-lg-6">
+                        <div class="section_content">						
+                            <h1>{{$j_view->textos->where('tipo', 'titulo_empolg')->first()->texto}}</h1>
+                            <p>{{$j_view->textos->where('tipo', 'descricao_empolg')->first()->texto}}</p>
+                            
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="about_us_image_box justify-content-center">
+                            <img class="img-fluid w-100" src="{{asset($j_view->midias->where('tipo', 'empolg_pic')->first()->link)}}" alt="{{$j_view->midias->where('tipo', 'empolg_pic')->first()->alt}}">
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="about_us_image_box justify-content-center">
-                    <img class="img-fluid w-100" src="{{asset($j_view->midias->where('tipo', 'empolg_pic')->first()->link)}}" alt="{{$j_view->midias->where('tipo', 'empolg_pic')->first()->alt}}">
-                </div>
-            </div>
-        </div>
-    </div>
-    </section>
-    <!--================End About Us Area =================-->
+        </section>
+        <!--================End About Us Area =================-->
         <br>
         <strong>{{trans_choice("games.platforms", sizeof($j_view->plataformas))}}:</strong>
         @foreach ($j_view->plataformas as $plataforma)
-            <a href="{{$plataforma->link}}">{{$plataforma->nome}}</a>
+            <a href="{{$plataforma->link}}">{{$plataforma->nome}}</a> | 
         @endforeach
         <br>
         <strong>{{__("games.releasedate")}}: </strong>{{explode(" ",$j_view->data_lancamento)[0]}}
@@ -92,7 +93,26 @@
                 @endforeach
             @endif
         </p>
-        </center>
-
-    </iframe>
+    </center>
+    @if(sizeof($noticias) > 0)
+        <br>
+        <div class="row text-center">
+            <div class="col-md-12">
+                <h1>{{__("games.relatednews")}}</h1>
+            </div>
+        </div>
+        @foreach ($noticias as $noticia)        
+            <a href="/{{$lang}}/blog/{{$noticia->id}}">
+                <div class="row text-center">
+                    <div class="col-md-6"><img width="360" src="{{ asset($noticia->midias->first()->link) }}" alt="{{ $noticia->midias->first()->alt }}"></div>
+                    <div class="col-md-6">
+                        <h1><div class="row">{{ $noticia->textos->where('tipo', 'titulo')->first()->texto }}</div></h1>
+                        {{-- <div class="row">
+                            {{ $jogo->textos->first()->texto }}
+                        </div> --}}
+                    </div>
+                </div>
+            </a>
+        @endforeach
+    @endif
 @endsection

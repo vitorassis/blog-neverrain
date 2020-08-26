@@ -15,7 +15,7 @@
                 <div class="col-md-6 text-right"><label for="nome">Plataformas:</label></div>
                 <div class="col-md-4">
                     <div class="container-select">
-                        <div class="tag-container">
+                        <div class="tag-container platfs">
 
                             <select name="plataformas" id="plataformas" class="form-control" onchange="selectEvent()">
                                 <option></option>
@@ -26,6 +26,23 @@
                         </div>
                     </div>
                     <input type="hidden" name="plataformas" id="platfs" value="[]">
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-6 text-right"><label for="nome">Tags:</label></div>
+                <div class="col-md-4">
+                    <div class="container-select">
+                        <div class="tag-container tgs">
+
+                            <select id="tags" class="form-control" onchange="selectEventTag()">
+                                <option></option>
+                                @foreach($tags as $tag)
+                                    <option value="{{$tag->nome}}">{{$tag->nome}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" name="tags" id="tgs" value="[]">
                 </div>
             </div>
             <div class="row form-group">

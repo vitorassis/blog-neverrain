@@ -17,8 +17,8 @@ class CreateTagsdojogoTable extends Migration
             $table->unsignedBigInteger('jogo_id');
             $table->unsignedBigInteger('tag_id');
 
-            $table->foreign('jogo_id')->references('id')->on('jogos');
-            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->foreign('jogo_id')->references('id')->on('jogos')->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
             $table->primary(['jogo_id','tag_id']);
             $table->timestamps();
         });

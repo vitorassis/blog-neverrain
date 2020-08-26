@@ -6,6 +6,7 @@ return[
     'watchtrailer'=>'Watch trailer',
     'wherebuy'=>'Where buy',
     'platforms'=>'Plataform|Plataforms',
-    'releasedate'=>'Release Date'
+    'releasedate'=>'Release Date',
+    'relatednews'=>"Related News"
 
 ];

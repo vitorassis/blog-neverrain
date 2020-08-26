@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Jogo;
+use App\Tag;
+use App\Noticia;
+use App\TagDoJogo;
 use App\Midia;
 use App\Texto;
 use App\PlataformaDisponivel;
@@ -26,15 +29,29 @@ class JogoController extends Controller
     }
 
     public function indexadmin(){
-        return view('admin.jogos.index', ['jogos'=>Jogo::all()]);
+
+        $jogos = Jogo::all();
+        for ($i=0; $i < sizeof($jogos); $i++) { 
+            $jogos[$i]->alert = sizeof(config('app.locales')) > $jogos[$i]->getTextosQtty();
+        }
+
+        return view('admin.jogos.index', ['jogos'=>$jogos]);
     }
 
     public function view($lang, $nome){
         $jogo = Jogo::where('nome', $nome)->with(['midias', 'textos'=>function($q) use ($lang){
             $q->where('lang', $lang);
-        }, 'plataformas'])->get()->first();
+        }, 'plataformas',
+        'tags'])->get()->first();
 
-        return view('jogo', ['j_view'=>$jogo, 'jogos'=> Jogo::orderBy('data_lancamento', 'DESC')->get()]);
+        $noticias = [];
+        if(sizeof($jogo->tags) > 0)
+            $noticias = Noticia::whereHas('tags', function ($q) use($jogo){
+                foreach($jogo->tags as $tag)
+                    $q = $q->orWhere('tag_id', Tag::where('nome', $tag->nome)->get()->first()->nome);
+            })->with(['midias', 'textos'])->orderBy("data_publicacao", "DESC")->skip(0)->limit(5)->get();
+        
+        return view('jogo', ['j_view'=>$jogo, 'jogos'=> Jogo::orderBy('data_lancamento', 'DESC')->get(), 'noticias'=>$noticias]);
     }
 
     public function store(Request $request){
@@ -50,6 +67,16 @@ class JogoController extends Controller
         $jogo->data_lancamento = $request->data_lancamento;
 
         $jogo->save();
+
+        $tags = json_decode($request->tags);
+
+        foreach($tags as $tag){
+            $tJ = new TagDoJogo();
+
+            $tJ->jogo_id = $jogo->id;
+            $tJ->tag_id = Tag::where('nome', $tag)->get()->first()->id;
+            $tJ->save();
+        }
         
         $plataformas = json_decode($request->plataformas);
 
@@ -73,11 +100,11 @@ class JogoController extends Controller
             }
         }
 
-        foreach(array('head_pic', 'empolg_pic') as $tipo){
+        foreach(array('head_pic', 'empolg_pic', 'press_kit') as $tipo){
             $midia = new Midia();
 
             $midia->jogo_id = $jogo->id;
-            $midia->tipo = "head_pic";
+            $midia->tipo = $tipo;
             $midia->link = md5(random_int(1, 999999999999999)).$tipo.".". explode(".", $request->$tipo->getClientOriginalName())[1];
             $midia->alt = "Capa";
             $request->$tipo->storeAs('', $midia->link);
@@ -131,10 +158,17 @@ class JogoController extends Controller
         foreach($plats as $plat){
             array_push($ps, Plataforma::find($plat->plataforma_id)->nome);
         }
-
         $jogo->plataformas = json_encode($ps);
 
-        return view('admin.jogos.edit', ['jogo'=>$jogo, 'plataformas'=>Plataforma::all(), 'langs'=>config('app.locales')]);
+        $tgs = TagDoJogo::where('jogo_id', $jogo->id)->get();
+        $ps = array();
+        foreach($tgs as $tag){
+            array_push($ps, Tag::find($tag->tag_id)->nome);
+        }
+
+        $jogo->tags = json_encode($ps);
+
+        return view('admin.jogos.edit', ['jogo'=>$jogo, 'plataformas'=>Plataforma::all(), 'langs'=>config('app.locales'), 'tags'=>Tag::all()]);
     }
 
     public function editstore($id, Request $request){
@@ -150,6 +184,19 @@ class JogoController extends Controller
         $jogo->save();
 
         $plataformas = json_decode($request->plataformas);
+
+        foreach(TagDoJogo::where('jogo_id', $jogo->id)->get() as $tag)
+            $tag->remove();
+
+        $tags = json_decode($request->tags);
+
+        foreach($tags as $tag){
+            $tJ = new TagDoJogo();
+
+            $tJ->jogo_id = $jogo->id;
+            $tJ->tag_id = Tag::where('nome', $tag)->get()->first()->id;
+            $tJ->save();
+        }
 
         foreach(PlataformaDisponivel::where('jogo_id', $jogo->id)->get() as $plat)
             $plat->remove();
@@ -204,6 +251,20 @@ class JogoController extends Controller
             $request->head_pic->storeAs('', $head->link);
             $head->link =  'storage/' . $head->link;
             $head->save();
+        }
+
+        if(isset($request->press_kit)){
+            $press = Midia::where('tipo', 'press_kit')->where('jogo_id', $id)->get()->first();
+            if($press == null)
+                $press = new Midia();
+
+            $press->jogo_id = $id;
+            $press->tipo = "press_kit";
+            $press->link = md5(random_int(1, 999999999999999))."press_kit.". explode(".", $request->press_kit->getClientOriginalName())[1];
+            $request->press_kit->storeAs('', $press->link);
+            $press->link =  'storage/' . $press->link;
+            $press->alt =  'press_kit';
+            $press->save();
         }
         
         if(isset($request->carousel_pic)){

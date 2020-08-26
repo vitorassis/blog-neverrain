@@ -6,5 +6,6 @@ return[
     'watchtrailer'=>'Assista ao trailer',
     'wherebuy'=>'Onde comprar',
     'platforms'=>'Plataforma|Plataformas',
-    'releasedate'=>'Data de Lançamento'
+    'releasedate'=>'Data de Lançamento',
+    'relatednews'=>"Notícias Relacionadas"
 ];

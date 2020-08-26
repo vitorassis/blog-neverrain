@@ -19,7 +19,7 @@ class CreateTextosTable extends Migration
             $table->BigInteger('noticia_id')->nullable()->unsigned();
             $table->string('tipo');
             $table->string('lang');
-            $table->string('texto');
+            $table->text('texto');
 
             $table->foreign('jogo_id')->references('id')->on('jogos')->onDelete('cascade');
             $table->foreign('noticia_id')->references('id')->on('noticias')->onDelete('cascade');

@@ -19,4 +19,12 @@ class Jogo extends Model
     public function plataformas(){
         return $this->belongsToMany('App\Plataforma', 'plataformasdisponiveis');
     }
+
+    public function tags(){
+        return $this->belongsToMany('App\Tag', 'tagsdojogo');
+    }
+
+    public function getTextosQtty(){
+        return Texto::getQtty($this->id, "jogo");
+    }
 }

@@ -91,6 +91,9 @@
             <div class="row"><h2>Vídeo de fundo (vimeo):</h2></div>
             <div class="row"><input type="text" class="form-control" name="bkgd_vid" value="{{$jogo->r_midias['bkgd_vid'][0]->link}}" required></div>
             
+            <div class="row"><h2>Press Kit:</h2></div>
+            <div class="row"><input type="file" class="form-control" name="press_kit" accept=".zip,.rar,.7zip"></div>
+            
             <div class="row">
                 <h2>Links:</h2>
             </div>

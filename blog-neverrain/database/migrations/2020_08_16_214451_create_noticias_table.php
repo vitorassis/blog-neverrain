@@ -15,13 +15,10 @@ class CreateNoticiasTable extends Migration
     {
         Schema::create('noticias', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tag_id');
-            $table->json('titulo');
-            $table->json('conteudo');
+            $table->timestamp("data_publicacao");
             $table->timestamps();
             // $table->dropSoftDeletes();
 
-            $table->foreign('tag_id')->references('id')->on('tags');
         });
     }
 
