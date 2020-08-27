@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 class PlataformaDisponivel extends Model
 {
     protected $table = 'plataformasdisponiveis';
+    public $timestamps=false;
     
     public function remove(){
         DB::delete('delete from plataformasdisponiveis where plataforma_id = ? and jogo_id=?', 

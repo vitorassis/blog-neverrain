@@ -90,6 +90,21 @@ Route::prefix('/ademiro')->group(function(){
 
         Route::get('delete/{id}', 'TagController@delete');
     });
+
+    Route::prefix('faq')->middleware('auth')->group(function(){
+        Route::get('/', 'FaqController@indexadmin');
+        Route::get('/new', function(){
+            return view('admin.faq.new', ['langs'=>config("app.locales")]);
+        });
+        Route::post('store', 'FaqController@store');
+
+        Route::prefix('edit')->group(function(){
+            Route::get('{id}', 'FaqController@edit');
+            Route::post('{id}', 'FaqController@editstore');
+        });
+
+        Route::get('delete/{id}', 'FaqController@delete');
+    });
 });
     
 

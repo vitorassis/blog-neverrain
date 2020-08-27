@@ -20,7 +20,6 @@ class CreateTagsdanoticiaTable extends Migration
             $table->foreign('noticia_id')->references('id')->on('noticias')->onDelete('cascade');
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
             $table->primary(['noticia_id','tag_id']);
-            $table->timestamps();
         });
     }
 

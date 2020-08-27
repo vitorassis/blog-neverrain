@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 class TagDaNoticia extends Model
 {
     protected $table = 'tagsdanoticia';
+    public $timestamps=false;
     
     public function remove(){
         DB::delete('delete from tagsdanoticia where tag_id = ? and noticia_id=?', 

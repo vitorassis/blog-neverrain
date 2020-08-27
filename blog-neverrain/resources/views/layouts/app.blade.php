@@ -111,6 +111,9 @@
                                 <a class="nav-link" href="/ademiro/jogos">Jogos</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="/ademiro/faq">FAQ</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="/ademiro/plataformas">Plataformas</a>
                             </li>
                             <li class="nav-item">

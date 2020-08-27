@@ -17,7 +17,7 @@ class CreateTagsTable extends Migration
             $table->id();
             $table->string('nome');
             $table->string('cor');
-            $table->timestamps();
+            $table->string('cor_letra');
         });
     }
 

@@ -17,6 +17,12 @@
                 <input type="color" name="cor" class="form-control" id="cor">
             </div>
         </div>
+        <div class="row form-group">
+            <div class="col-md-6 text-right"><label for="cor">Cor da letra:</label></div>
+            <div class="col-md-4">
+                <input type="color" name="cor_letra" class="form-control" id="cor_letra" value="#000">
+            </div>
+        </div>
         <div class="row">
             <button type="submit" class="btn btn-success">Salvar</button>
         </div>

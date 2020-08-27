@@ -21,7 +21,6 @@ class CreatePlataformasdisponiveisTable extends Migration
             $table->foreign('plataforma_id')->references('id')->on('plataformas')->onDelete('cascade');
             $table->primary(['jogo_id', 'plataforma_id']);
 
-            $table->timestamps();
         });
     }
 

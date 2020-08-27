@@ -8,6 +8,7 @@ use App\User;
 use App\Tag;
 use App\Texto;
 use App\Plataforma;
+use App\Faq;
 use App\PlataformaDisponivel;
 
 class DatabaseSeeder extends Seeder
@@ -31,6 +32,8 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Midias table seeded!');
         $this->call("UserTableSeeder");
         $this->command->info('User table seeded!');
+        $this->call("FaqTableSeeder");
+        $this->command->info('Faq table seeded!');
         $this->call("TextosTableSeeder");
         $this->command->info('Textos table seeded!');
         $this->call("PlataformasTableSeeder");
@@ -58,8 +61,8 @@ class NoticiasTableSeeder extends Seeder{
 
 class TagsTableSeeder extends Seeder{
     public function run(){
-        Tag::create(['nome'=>'Tag 1', 'cor'=>'yellow']);
-        Tag::create(['nome'=>'Tag 2', 'cor'=>'#ccc']);
+        Tag::create(['nome'=>'Tag 1', 'cor'=>'yellow', 'cor_letra'=>'black']);
+        Tag::create(['nome'=>'Tag 2', 'cor'=>'#000', 'cor_letra'=>'white']);
     }
 }
 
@@ -67,6 +70,14 @@ class TagsDaNoticiaTableSeeder extends Seeder{
     public function run(){
         DB::insert('insert into tagsdanoticia (tag_id, noticia_id) values (?, ?)', [1, 1]);
         DB::insert('insert into tagsdanoticia (tag_id, noticia_id) values (?, ?)', [2, 1]);
+    }
+}
+
+class FaqTableSeeder extends Seeder{
+    public function run(){
+        Faq::create(['created_at'=>'2020-08-26']);
+        Faq::create(['created_at'=>'2020-08-26', 'upvotes'=>4]);
+        Faq::create(['created_at'=>'2020-08-26', 'upvotes'=>3]);
     }
 }
 
@@ -130,6 +141,27 @@ class TextosTableSeeder extends Seeder{
 
         Vestibulum dictum velit vel nulla laoreet fringilla. Ut vitae arcu maximus, commodo mauris et, malesuada nisl. Cras nec nisi quis libero scelerisque fringilla. Donec maximus sem quis justo laoreet egestas. Praesent pulvinar iaculis consequat. Quisque non dui tincidunt, posuere sem vel, hendrerit nibh. Pellentesque ut ligula ac augue tempor ultricies. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus sed molestie odio, a interdum elit. Nullam posuere faucibus semper. Suspendisse rutrum, turpis sed semper dictum, mi felis pellentesque leo, sed porttitor urna justo eu metus. Donec cursus auctor augue, facilisis vehicula enim scelerisque ac. Integer massa lectus, pulvinar quis ex nec, ultrices tempus nunc. Curabitur rutrum mattis lacinia. Duis tempor sagittis augue, sit amet gravida odio commodo quis. Vestibulum volutpat nulla eu justo volutpat, id rhoncus purus pellentesque.']);
         Texto::create(['noticia_id'=>1, 'tipo'=>'corpo', 'lang'=>'es', 'texto'=>'Nullam tortor dui, aliquet vel ipsum sit amet, tincidunt ultricies tortor. Aliquam ac sapien lobortis eros sodales aliquet nec vel mi. Sed feugiat, arcu in lacinia viverra, felis mauris tristique orci, id egestas felis justo eget enim. Pellentesque pretium dictum gravida. Phasellus elementum sapien sit amet ultricies mollis. Donec vestibulum urna nulla, a pellentesque felis vulputate nec. Mauris sodales fringilla dolor in vehicula. Ut massa ligula, varius ut sodales ut, scelerisque posuere nisl. Maecenas odio mi, viverra non porta sit amet, faucibus eu dolor. Mauris interdum tempus quam at fringilla. Quisque diam metus, elementum sed faucibus in, porttitor volutpat nisi. Nulla facilisi. Morbi iaculis pellentesque dui sit amet auctor. Mauris posuere sed ipsum quis lobortis.']);
+
+        Texto::create(['faq_id'=>1, 'lang'=>'pt', 'tipo'=>'question', 'texto'=>'Por que o Enzo é um idiota?']);
+        Texto::create(['faq_id'=>1, 'lang'=>'pt', 'tipo'=>'answer', 'texto'=>'Não sei, pergunte a ele']);
+        Texto::create(['faq_id'=>1, 'lang'=>'en', 'tipo'=>'question', 'texto'=>'Why is Enzo a bastard?']);
+        Texto::create(['faq_id'=>1, 'lang'=>'en', 'tipo'=>'answer', 'texto'=>'I don\'t know, ask him']);
+        Texto::create(['faq_id'=>1, 'lang'=>'es', 'tipo'=>'question', 'texto'=>'¿Por que o Enzo é um idiota?']);
+        Texto::create(['faq_id'=>1, 'lang'=>'es', 'tipo'=>'answer', 'texto'=>'No sei, pregunte a elle']);
+
+        Texto::create(['faq_id'=>2, 'lang'=>'pt', 'tipo'=>'question', 'texto'=>'Por que o Enzo é um idiota?(UP 4)']);
+        Texto::create(['faq_id'=>2, 'lang'=>'pt', 'tipo'=>'answer', 'texto'=>'Não sei, pergunte a ele']);
+        Texto::create(['faq_id'=>2, 'lang'=>'en', 'tipo'=>'question', 'texto'=>'Why is Enzo a bastard?(UP 4)']);
+        Texto::create(['faq_id'=>2, 'lang'=>'en', 'tipo'=>'answer', 'texto'=>'I don\'t know, ask him']);
+        Texto::create(['faq_id'=>2, 'lang'=>'es', 'tipo'=>'question', 'texto'=>'¿Por que o Enzo é um idiota?(UP 4)']);
+        Texto::create(['faq_id'=>2, 'lang'=>'es', 'tipo'=>'answer', 'texto'=>'No sei, pregunte a elle']);
+
+        Texto::create(['faq_id'=>3, 'lang'=>'pt', 'tipo'=>'question', 'texto'=>'Por que o Enzo é um idiota?(UP 3)']);
+        Texto::create(['faq_id'=>3, 'lang'=>'pt', 'tipo'=>'answer', 'texto'=>'Não sei, pergunte a ele']);
+        Texto::create(['faq_id'=>3, 'lang'=>'en', 'tipo'=>'question', 'texto'=>'Why is Enzo a bastard?(UP 3)']);
+        Texto::create(['faq_id'=>3, 'lang'=>'en', 'tipo'=>'answer', 'texto'=>'I don\'t know, ask him']);
+        Texto::create(['faq_id'=>3, 'lang'=>'es', 'tipo'=>'question', 'texto'=>'¿Por que o Enzo é um idiota?(UP 3)']);
+        Texto::create(['faq_id'=>3, 'lang'=>'es', 'tipo'=>'answer', 'texto'=>'No sei, pregunte a elle']);
     }
 }
 

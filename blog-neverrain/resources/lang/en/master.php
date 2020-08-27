@@ -8,7 +8,13 @@ return [
     'whoarewe' => 'Who are we?',
     'contact' => 'Contact and Support',
     'stuffs' => 'Stuffs',
-    'welcome' => 'Welcome!'
+    'welcome' => 'Welcome!',
+    'freqquestion'=>'Commom Questions',
+    'errors'=>[
+        '404'=>'Page not found!',
+        '500'=> 'We\'re having troubles with yout request...',
+        'any'=>'Please, try again later'
+    ]
 ];
 
 //INGLES

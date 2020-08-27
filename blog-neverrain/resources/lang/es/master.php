@@ -10,7 +10,13 @@ return [
     'stuffs' => 'Cosas',
     'welcome' => '¡Bienvenido!',
     'previous' => 'Anterior',
-    'next' => 'Siguiente'
+    'next' => 'Siguiente',
+    'freqquestion'=>'Preguntas Frequentes',
+    'errors'=>[
+        '404'=>'Página não encontrada!',
+        '500'=>'Estamos tendo problemas com a sua requisição',
+        'any'=>'Please, try again later'
+    ]
 ];
 
 //ESPANHOL

@@ -96,5 +96,32 @@
             </div>
 
 		</div>
+    </section>
+    
+    <section class="frequently_area">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="main_title">
+						<h2>{{__("master.freqquestion")}}</h2>
+						<h1 style="color: black;">{{__("master.freqquestion")}}</h1>
+					</div>
+				</div>
+			</div>
+			<div class="row frequent_inner">
+                @php $i=0 @endphp 
+                @foreach($faq as $question)
+                    
+                    <div class="@if($i++%2 == 0) col-lg-5 col-md-5 @else offset-lg-2 col-lg-5 offset-md-2 col-md-5 @endif">
+                        <div class="frequent_item">
+                            <h3  style="color: black;">{{$question->textos->where('tipo', 'question')->where('lang', $lang)->first()->texto}}</h3>
+                            <p>{{$question->textos->where('tipo', 'answer')->where('lang', $lang)->first()->texto}}</p>
+                        </div>
+                    </div>
+                        
+                @endforeach
+				
+			</div>
+		</div>
 	</section>
 @stop

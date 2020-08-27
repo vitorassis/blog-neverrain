@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Jogo extends Model
 {
     protected $table = "jogos";
+    public $timestamps=false;
 
     public function midias(){
         return $this->hasMany('App\Midia');

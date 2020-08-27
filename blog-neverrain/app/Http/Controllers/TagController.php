@@ -16,6 +16,7 @@ class TagController extends Controller
         $tag = new tag();
         $tag->nome = $request->nome;
         $tag->cor = $request->cor;
+        $tag->cor_letra = $request->cor_letra;
         $tag->save();
 
         return redirect('/ademiro/tags/');
@@ -32,6 +33,7 @@ class TagController extends Controller
 
         $tag->nome = $request->nome;
         $tag->cor = $request->cor;
+        $tag->cor_letra = $request->cor_letra;
         $tag->save();
 
         return redirect('/ademiro/tags/edit/'.$id);

@@ -17,7 +17,6 @@ class CreateJogosTable extends Migration
             $table->id();
             $table->string('nome')->unique();
             $table->timestamp('data_lancamento');
-            $table->timestamps();
         });
     }
 

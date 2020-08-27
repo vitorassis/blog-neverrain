@@ -24,7 +24,6 @@ class CreateMidiasTable extends Migration
 
             $table->foreign('jogo_id')->references('id')->on('jogos')->onDelete('cascade');
             $table->foreign('noticia_id')->references('id')->on('noticias')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

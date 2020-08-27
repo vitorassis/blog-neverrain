@@ -17,7 +17,6 @@ class CreatePlataformasTable extends Migration
             $table->id();
             $table->string("nome");
             $table->string("link")->nullable();
-            $table->timestamps();
         });
     }
 

@@ -16,8 +16,6 @@ class CreateNoticiasTable extends Migration
         Schema::create('noticias', function (Blueprint $table) {
             $table->id();
             $table->timestamp("data_publicacao");
-            $table->timestamps();
-            // $table->dropSoftDeletes();
 
         });
     }

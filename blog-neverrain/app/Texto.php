@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 class Texto extends Model
 {
     protected $table = "textos";
+    public $timestamps=false;
 
     public function owner(){
         if($this->jogo_id != 0)
@@ -30,6 +31,12 @@ class Texto extends Model
                 $textos = DB::table('textos')
                                 ->select('tipo', DB::raw('count(*) as sub'))
                                 ->where('noticia_id', $id)
+                                ->groupBy('tipo')->get();
+                break;
+            case "faq":
+                $textos = DB::table('textos')
+                                ->select('tipo', DB::raw('count(*) as sub'))
+                                ->where('faq_id', $id)
                                 ->groupBy('tipo')->get();
                 break;
         }
