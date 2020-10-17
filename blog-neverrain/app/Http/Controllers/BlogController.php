@@ -30,10 +30,13 @@ class BlogController extends Controller
         return view('admin.noticias.index', ['noticias'=>$noticias]);
     }
 
-    public function show($lang, $id){
+    public function show($lang, $titulo){
         $noticia = Noticia::with(['tags', 'midias', 'textos'=> function($q) use($lang){
             $q->where('lang', $lang);
-        }])->where('id', $id)->get()->first();
+        }])->whereHas('textos', function ($q) use($lang, $titulo){
+            $q->where('tipo', 'titulo')->
+                where('texto', $titulo)->where('lang', $lang);
+        })->get()->first();
         
         return view('noticia', ['noticia'=>$noticia, 'jogos'=>Jogo::all()]);
     }

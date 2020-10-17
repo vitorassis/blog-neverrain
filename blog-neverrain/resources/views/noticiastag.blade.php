@@ -13,7 +13,7 @@
         </div>
     </div>
     @foreach ($noticias as $noticia)        
-        <a href="/{{$lang}}/blog/{{$noticia->id}}">
+        <a href="/{{$lang}}/blog/{{$noticia->textos->where('tipo', 'titulo')->first()->texto}}">
             <div class="row text-center">
                 <div class="col-md-6"><img width="360" src="{{ asset($noticia->midias->first()->link) }}" alt="{{ $noticia->midias->first()->alt }}"></div>
                 <div class="col-md-6">

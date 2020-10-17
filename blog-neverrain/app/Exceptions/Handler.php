@@ -52,16 +52,16 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if ($this->isHttpException($exception)) {
-            if (strval($exception->getStatusCode())[0] == "4") {
-                return response()->view('errors.' . '404', ['jogos'=>Jogo::orderBy('id', 'DESC')->get()], 404);
-            }
+//            if (strval($exception->getStatusCode())[0] == "4") {
+   //             return response()->view('errors.' . '404', ['jogos'=>Jogo::orderBy('id', 'DESC')->get()], 404);
+     //       }
              
             if (strval($exception->getStatusCode())[0] == "5") {
                 return response()->view('errors.' . '500', ['jogos'=>Jogo::orderBy('id', 'DESC')->get()], 500);
             }
         }
-        return response()->view('errors.' . 'any', ['jogos'=>Jogo::orderBy('id', 'DESC')->get()], 500);
+     //   return response()->view('errors.' . 'any', ['jogos'=>Jogo::orderBy('id', 'DESC')->get()], 500);
            
-        //return parent::render($request, $exception);
+        return parent::render($request, $exception);
     }
 }

@@ -69,8 +69,8 @@ Route::prefix('/ademiro')->group(function(){
         Route::post('/store', 'BlogController@store');
 
         Route::prefix('edit')->group(function(){
-            Route::get('{id}', 'BlogController@edit');
-            Route::post('{id}', 'BlogController@editstore');
+            Route::get('{titulo}', 'BlogController@edit');
+            Route::post('{titulo}', 'BlogController@editstore');
         });
 
         Route::get('delete/{id}', 'BlogController@delete');
